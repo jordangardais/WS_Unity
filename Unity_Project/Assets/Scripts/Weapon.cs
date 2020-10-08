@@ -11,7 +11,7 @@ namespace Com.Array.Weapons
         public float damage = 10f;
         public float range = 100f;
         public Camera fpsCam;
-
+        //public ParticleSystem MuzzleFlash;
         private GameObject currentWeapon;
 
 
@@ -28,6 +28,11 @@ namespace Com.Array.Weapons
 
             }
             if (Input.GetKeyDown(KeyCode.Alpha1)) Equip(0);
+            if (Input.GetButtonDown("Fire2"))
+            {
+                Power();
+            }
+
         }
 
         void Equip(int p_ind)
@@ -37,14 +42,36 @@ namespace Com.Array.Weapons
             t_newWeapon.transform.localPosition = Vector3.zero;
             t_newWeapon.transform.localEulerAngles = Vector3.zero;
 
+
             currentWeapon = t_newWeapon;
+        }
+        void Power()
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range) && currentWeapon != null)
+            {
+                Debug.Log(hit.transform.name);
+
+                Target target = hit.transform.GetComponent<Target>();
+                if (target != null && currentWeapon != null)
+                {
+                    target.TakePower(damage);
+                }
+            }
         }
         void Shoot()
         {
+            //MuzzleFlash.Play();
             RaycastHit hit;
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range) && currentWeapon != null )
             {
                 Debug.Log(hit.transform.name);
+
+                Target target = hit.transform.GetComponent<Target>();
+                if (target != null && currentWeapon != null)
+                {
+                    target.TakeDamage(damage);
+                }
             }
         }
 

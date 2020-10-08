@@ -1,18 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public float health = 50f;
+    
+    public float healthp = 50f;
+    public void TakePower(float amount)
     {
+        healthp -= amount;
+        if (healthp <= 0f)
+        {
+            //set boolean(armorBroken) == true;
+        }
         
     }
-
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage (float amount)
     {
-        
+        //if boolean(armorBroken) == true;
+        health -= amount;
+        if (health <= 0f && healthp <= 0f)
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }
