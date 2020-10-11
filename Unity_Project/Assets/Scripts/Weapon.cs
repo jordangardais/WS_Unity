@@ -9,7 +9,7 @@ namespace Com.Array.Weapons
         public Gun[] loadout;
         public Transform weaponParent;
         public float damage = 10f;
-        public float range = 100f;
+        public float range = 10000f;
         public Camera fpsCam;
         //public ParticleSystem MuzzleFlash;
         private GameObject currentWeapon;
@@ -27,23 +27,43 @@ namespace Com.Array.Weapons
                 Shoot();
 
             }
-            if (Input.GetKeyDown(KeyCode.Alpha1)) Equip(0);
+            if (Input.GetKeyDown(KeyCode.Alpha1)) Equip(0); 
+            if (Input.GetMouseButtonDown(2))
+
+            { 
+                Power2();
+            }
+        
             if (Input.GetButtonDown("Fire2"))
             {
                 Power();
             }
 
-        }
 
-        void Equip(int p_ind)
-        {
-            if (currentWeapon != null) Destroy(currentWeapon);
-            GameObject t_newWeapon = Instantiate(loadout[p_ind].prefab, weaponParent.position, weaponParent.rotation, weaponParent) as GameObject;
-            t_newWeapon.transform.localPosition = Vector3.zero;
-            t_newWeapon.transform.localEulerAngles = Vector3.zero;
+            void Equip(int p_ind)
+            {
+                if (currentWeapon != null) Destroy(currentWeapon);
+                GameObject t_newWeapon = Instantiate(loadout[p_ind].prefab, weaponParent.position, weaponParent.rotation, weaponParent) as GameObject;
+                t_newWeapon.transform.localPosition = Vector3.zero;
+                t_newWeapon.transform.localEulerAngles = Vector3.zero;
 
 
-            currentWeapon = t_newWeapon;
+                currentWeapon = t_newWeapon;
+            }
+            void Power2()
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range) && currentWeapon != null)
+                {
+                    Debug.Log(hit.transform.name);
+
+                    TargetWhite target = hit.transform.GetComponent<TargetWhite>();
+                    if (target != null && currentWeapon != null)
+                    {
+                        target.TakePower2(damage);
+                    }
+                }
+            }
         }
         void Power()
         {
@@ -63,7 +83,7 @@ namespace Com.Array.Weapons
         {
             //MuzzleFlash.Play();
             RaycastHit hit;
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range) && currentWeapon != null )
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range) && currentWeapon != null)
             {
                 Debug.Log(hit.transform.name);
 
@@ -76,4 +96,5 @@ namespace Com.Array.Weapons
         }
 
     }
+
 }

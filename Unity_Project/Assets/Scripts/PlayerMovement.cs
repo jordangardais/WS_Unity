@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+
+    public GameObject FirstPersonPlayer; 
     public CharacterController controller;
 
     public float speed = 12f;
@@ -47,5 +50,9 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime); 
 
 
+    }
+    void Awake ()
+    {
+        
     }
 }
